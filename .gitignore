@@ -1,0 +1,11 @@
+venv
+*.pyc
+.DS_Store
+obsolete
+build
+*#
+.#*
+*.~*~
+*.log
+*.sqlite
+
