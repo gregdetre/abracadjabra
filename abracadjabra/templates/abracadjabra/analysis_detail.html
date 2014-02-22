@@ -1,0 +1,11 @@
+{% extends "abracadjabra/base.html" %}
+
+{% load humanize %}
+
+{% block title %}
+  {{ expt.name }} | AB test {% if dt_joined %}(> {{ dt_joined|naturalday }}){% endif %}
+{% endblock title %}
+
+{% block content %}
+  {% include "abracadjabra/experiment_detail_core.html" %}
+{% endblock content %}

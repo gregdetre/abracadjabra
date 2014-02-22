@@ -1,0 +1,83 @@
+{% load version_url %}
+{% load humanize %}
+
+{% block content %}
+  <h1>
+    <a href="{{ expt.get_absolute_url }}" {% if expt.tooltip %}title="{{ expt.tooltip }}"{% endif %}>
+      {{ expt.name }}
+    </a>
+    {% if expt.id %}
+      (<a href="/admin/abracadjabra/experiment/{{ expt.id }}/">admin</a>)
+    {% endif %}
+  </h1>
+
+  <ul>
+    {% if expt.status != None %}
+      <li>Experiment status = <em>{% if expt.status %}Active{% else %}Inactive{% endif %}.</em></li>
+    {% endif %}
+    {% if expt.cre %}
+      <li>This experiment was created <em>{{ expt.cre|naturalday }}</em>.</li>
+    {% endif %}
+    {% if last_ran %}
+      <li>This experiment last ran <em>{{ last_ran|naturalday }}</em>.</li>
+    {% endif %}
+    <li>
+      {% if dt_joined %}
+        Scoped to users who joined after <em>{{ dt_joined|naturalday }}</em>.
+      {% endif %}
+      Change scope to:
+        <a href="{{ expt.get_absolute_url }}?dt_joined=recent_week">last 7 days</a>,
+        <a href="{{ expt.get_absolute_url }}?dt_joined=recent_month">last 30 days</a>,
+        <a href="{{ expt.get_absolute_url }}?dt_joined=recent_3months">last 3 months</a>,
+        <a href="{{ expt.get_absolute_url }}?dt_joined=alltime">alltime</a>,
+      </li>
+    </li>
+  </ul>
+
+  <table style="width: 98%" {% if expt.tooltip %}title="{{ expt.tooltip }}"{% endif %}>
+    <tr>
+      <td style="width: 300px"><em><!-- Name of bucket --></em></td>
+      {% for bucket in buckets %}<td><strong>
+          {% if bucket.name == 'All' %}<em>{% endif %}
+            {{ bucket.name|capfirst }}
+            {% if bucket.name == 'All' %}</em>{% endif %}
+      </strong></td>{% endfor %}
+    </tr>
+
+    <tr>
+      <td><em>nUsers joined after {{ dt_joined|naturalday }}</em></td>
+      {% for bucket in buckets %}<td title="nAnons = {{ bucket.nAnons|intcomma }}, nNamed = {{ bucket.nNamed|intcomma }}">
+          {% if bucket.name == 'All' %}<em>{% endif %}
+            {{ bucket.nUsers|intcomma }}
+          {% if bucket.name == 'All' %}</em>{% endif %}
+      </td>{% endfor %}
+    </tr>
+
+    <tr>
+      <td><em>% returned 1-12h after start</em></td>
+      {% for bucket in buckets %}<td>
+          {% if bucket.name == 'All' %}<em>{% endif %}
+          {% if bucket.pct_sameday_max %}<strong>{% endif %}
+            {{ bucket.pct_sameday|floatformat:2 }}%
+          {% if bucket.pct_sameday_max %}</strong>{% endif %}
+          {% if bucket.name == 'All' %}</em>{% endif %}
+      </td>{% endfor %}
+    </tr>
+
+    <tr>
+      <td><em>% returned 12-36h after start</em></td>
+      {% for bucket in buckets %}<td>
+          {% if bucket.name == 'All' %}<em>{% endif %}
+          {% if bucket.pct_nextday_max %}<strong>{% endif %}
+            {{ bucket.pct_nextday|floatformat:2 }}%
+          {% if bucket.pct_nextday_max %}</strong>{% endif %}
+          {% if bucket.name == 'All' %}</em>{% endif %}
+      </td>{% endfor %}
+    </tr>
+
+    <tr><td>&nbsp;</td></tr>
+
+  </table>
+
+{% endblock content %}
+

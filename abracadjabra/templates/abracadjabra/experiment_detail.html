@@ -1,0 +1,15 @@
+{% extends "abracadjabra/base.html" %}
+
+{% load version_url %}
+{% load humanize %}
+
+{% block title %}
+  {{ expt.name }} | AB test {% if dt_joined %}(> {{ dt_joined|naturalday }}){% endif %}
+{% endblock title %}
+
+{% block main_h1 %}<a href="{% url experiment_experiments %}">Experiments</a>{% endblock main_h1 %}
+
+{% block content %}
+  {% include "abracadjabra/experiment_detail_core.html" %}
+{% endblock content %}
+

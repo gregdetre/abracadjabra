@@ -1,0 +1,14 @@
+{% extends "email/base.html" %}
+
+{% load version_url %}
+{% load humanize %}
+
+{% block subject %}
+  {{ expt.name }} | AB test {% if dt_joined %}(> {{ dt_joined|naturalday }}){% endif %}
+{% endblock subject %}
+
+{% block body-width %}1000px{% endblock body-width %}
+
+{% block body %}
+  {% include "abracadjabra/experiment_detail_core.html" %}
+{% endblock body %}

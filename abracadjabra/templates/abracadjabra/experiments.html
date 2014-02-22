@@ -1,0 +1,59 @@
+{% extends "abracadjabra/base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+  <ul>
+    <li><a href="#active">active experiment{{ nExperimentsActive|pluralize }}</a> ({{ nExperimentsActive }})</li>
+    <li><a href="#analyses">back-analyses</a> ({{ nAnalyses }})</li>
+    <li><a href="#inactive">inactive experiment{{ nExperimentsInactive|pluralize }}</a> ({{ nExperimentsInactive }})</li>
+  </ul>
+
+
+  <h2 id="active"><em>Active</em> experiments ({{ nExperimentsActive }} of {{ nExperiments }})
+  </h2>
+  {% for experiment in active_experiments %}
+    <div id="header" class="row">
+      <div class="column grid_12"><a href="{% url experiment_detail experiment.id %}">{{ experiment.id }}) {{ experiment.name }}</a></div>
+    </div> <!-- row -->
+    <div class="clear"></div>
+  {% empty %}
+    No active experiments
+    <br />
+  {% endfor %}
+  <br />
+  <hr />
+  <br />
+
+  <h2 id="analyses"><em>Back-analyses</em> ({{ analyses|length }})</h2>
+  {% for analysis in analyses %}
+    <div id="header" class="row">
+      <div class="column grid_12"><a href="{% url experiment_analysis_detail analysis.slug %}">{{ analysis.name }}</a></div>
+    </div> <!-- row -->
+    <div class="clear"></div>
+  {% empty %}
+    No analyses
+  {% endfor %}
+  <br />
+  <hr />
+  <br />
+
+  <h2 id="inactive"><em>Inactive</em> experiments ({{ nExperimentsInactive }} of {{ nExperiments }})
+  </h2>
+  {% for experiment in inactive_experiments %}
+    <div id="header" class="row">
+      <div class="column grid_12" title="{{ experiment.slug }}">
+        <a href="{% url experiment_detail experiment.id %}">{{ experiment.id }}) {{ experiment.name }}</a>
+      </div>
+      <div class="clear"></div>
+    </div> <!-- row -->
+  {% empty %}
+    No inactive experiments
+    <br />
+  {% endfor %}
+  <br />
+  <hr />
+  <br />
+
+{% endblock content %}
+
