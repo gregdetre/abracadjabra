@@ -1,23 +1,22 @@
 # Django settings for abracadjabra project.
 
+import os
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+ROOT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)))
+
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+#     ('Greg Detre', 'greg@gregdetre.co.uk'),
 )
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'abracadjabra.sqlite',
     }
 }
 
@@ -29,7 +28,8 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+# TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'UTC'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -120,10 +120,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    'django.contrib.humanize',
+    'django_extensions',
+    'abracadjabra',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -153,4 +154,11 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+# turn these up if we're more worried about traffic than
+# staleness (BATTENHATCHES)
+CACHE_EXPIRY = {
+    'EXPERIMENT': 3600,
+    'EXPERIMENTUSER': 3600,
 }

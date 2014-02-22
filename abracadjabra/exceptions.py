@@ -1,0 +1,2 @@
+class SlugAttributeError(AttributeError): pass
+
